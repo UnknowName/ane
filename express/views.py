@@ -9,7 +9,6 @@ from express.forms import FileForm
 from express.models import Express
 from express.utils import read_excel, to_datetime, to_unicode
 
-import re
 import time
 from xpinyin import Pinyin
 
@@ -51,7 +50,8 @@ def data_import(request):
                     _, err_info = e
                     print err_info
                     return HttpResponse('%s %s' %('Import Failed:', err_info))
-        return HttpResponse(u'导入数据成功，共花费时间', time.clock())
+        process_time = str(time.clock()).encode('utf8')
+        return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
     else:
         form = FileForm()
     return render(request, 'import.html', locals())
