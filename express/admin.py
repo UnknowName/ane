@@ -29,12 +29,12 @@ class ExpressAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         post_data = form.cleaned_data
         old_detail = form.initial.get('detail')
+        start_time = obj.start_time
         new_detail = post_data.get('detail')
         end_date = post_data.get('end_time')
         number= long(post_data.get('number'))
         orig = post_data.get('orig')
         error_type = post_data.get('error_type')
-        start_time = post_data.get('start_time')
         status = post_data.get('status')
         follower = post_data.get('follower')
         if change and new_detail != old_detail:
@@ -50,6 +50,7 @@ class ExpressAdmin(admin.ModelAdmin):
                 return None
             except Exception as e:
                 print e
+                return None
         else:
             obj.priority = 0
         obj.number = number 
@@ -64,10 +65,11 @@ class ExpressAdmin(admin.ModelAdmin):
         obj.save()
 
     def get_queryset(self, request):
+        user = request.user
         qs = super(ExpressAdmin, self).get_queryset(request)
-        if request.user.is_superuser:
+        if user.is_superuser or user.has_perm('express.change_detail'):
             return qs
-        user = User.objects.get(username=request.user)
+        user = User.objects.get(username=user)
         return user.express_set.all()
 
     def get_readonly_fields(self, request, obj):
@@ -88,13 +90,23 @@ class ExpressAdmin(admin.ModelAdmin):
 class ExpressArchiveAdmin(admin.ModelAdmin):
     search_fields = ('number',)
     show_full_result_count = False
+    fieldsets = [
+        ('完结基本信息', {'fields':[
+                                    'number', 'orig', 'start_time', 'status',
+                                     'follower', 'detail', 'end_time'
+                                   ]
+                         }
+        ),
+        (None, {'fields':['message']})
+    ]
     list_display = (
         'number', 'orig', 'start_time', 'status',
-        'follower', 'detail', 'end_time'
+        'follower', 'detail', 'end_time', 'message'
     )
 
     def get_readonly_fields(self, request, obj):
-        return self.list_display
+        reads = [ field for field in self.list_display if field != 'message' ]
+        return reads
 
 
 admin.site.register(Express, ExpressAdmin)
