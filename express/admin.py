@@ -7,7 +7,7 @@ from models import Express, ExpressArchive
 
 
 class ExpressAdmin(admin.ModelAdmin):
-    search_fields = ('=number', '=status', '=follower')
+    search_fields = ('=number', '=status', '=follower__username')
     show_full_result_count = False
     list_display = (
         'number', 'orig', 'start_time', 'status', 'follower',
@@ -25,6 +25,7 @@ class ExpressAdmin(admin.ModelAdmin):
         (None, {'fields': ['end_time']}),
     ]
     exclude = ['priority']
+    actions = ['change_follower', 'export_data']
 
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
@@ -112,6 +113,17 @@ class ExpressAdmin(admin.ModelAdmin):
         if 'express.change_follower' in permes:
             read_only_fields = ('number', 'orig', 'follower', 'start_time', 'detail')
         return read_only_fields
+
+    def change_follower(self, request, queryset):
+        print dir(queryset)
+        return HttpResponse('Test info')
+    change_follower.short_description = "批量修改跟单人员"
+
+    def export_data(self, request, queryset):
+        print queryset
+        for data in queryset:
+            print dir(data)
+    export_data.short_description = '导出选中数据'
 
 
 class ExpressArchiveAdmin(admin.ModelAdmin):
