@@ -32,7 +32,7 @@ class ExpressAdmin(admin.ModelAdmin):
         start_time = obj.start_time
         new_detail = post_data.get('detail')
         end_date = post_data.get('end_time')
-        number= long(post_data.get('number'))
+        number= obj.number
         orig = post_data.get('orig')
         error_type = post_data.get('error_type')
         status = post_data.get('status')
