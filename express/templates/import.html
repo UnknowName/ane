@@ -1,0 +1,21 @@
+<html>
+  <head>
+      <title>数据导入</title>
+      <style>
+        div { margin:10px 20px;}
+      </style>
+  </head>
+  <body>
+    <div>
+      <form enctype="multipart/form-data" method="post" action="/import/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="Submit" value="导入">
+      </form>
+      <p>导入花费时间与文件大小成正比，导入的数据第一行是表头。如果没有表头，第一条数据将会略过</p>
+      <p>导入的数据中如果有重复，在重复行之前的数据会导入成功。重复行与之后的会导入失败。这时只需要删除
+      重复的行重新导入即可</p>
+      <p>如果EXCEL表中的跟单人员没有在系统中创建，导入过程会自动创建。帐号与密码就是中文的拼音，并自动给于跟单人员权限</p>
+    </div>
+  </body>
+</html>
