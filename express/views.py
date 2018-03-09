@@ -42,10 +42,12 @@ def data_import(request):
                     follower.groups = [perm]
                     follower.save()
                 try:
-                    Express.objects.create(
-                        number=num, start_time=to_datetime(start_time),
-                        orig=orig, follower=follower, status=status
+                    number = Express(
+                        number=num,orig=orig, follower=follower, status=status
                     )
+                    number.save()
+                    number.start_time = to_datetime(start_time)
+                    number.save()
                 except Exception as e:
                     _, err_info = e
                     print err_info
