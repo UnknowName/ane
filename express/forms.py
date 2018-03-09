@@ -4,5 +4,5 @@
 from django import forms
 
 
-class ImportForm(forms.Form):
-    filename = forms.FileField(lable='上传')
+class FileForm(forms.Form):
+    filename = forms.FileField(label='上传')
