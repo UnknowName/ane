@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from express.views import data_import
+from express.views import change_follower
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^import/$', data_import),
+    url(r'^change/$', change_follower),
 ]

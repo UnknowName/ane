@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Change Follower</title>
+  </head>
+  <body>
+    <form action='/change/' method='POST'>
+    {% csrf_token %}
+    <table border="0">
+        <tr>
+          <th>Number</th>
+          <th>orig</th>
+          <th>start_time</th>
+          <th>status</th>
+          <th>follower</th>
+          <th>error_type</th>
+          <th>resaon</th>
+        </tr>
+        {% for num in numbers %}
+          <tr>
+            <td>
+              <input type='checkbox' name='numbers' value="{{ num }}">
+                  {{ num }}
+              </input>
+            </td>
+            <td>{{ num.orig }}</td>
+            <td>{{ num.start_time }}</td>
+            <td>{{ num.status }}</td>
+            <td>{{ num.follower }}</td>
+            <td>{{ num.error_type }}</td>
+            <td>{{ num.resaon }}</td>
+          </tr>  
+        {% endfor %}
+    </table>
+    <p>Change To User:</p>
+    {% for user in users %}
+      <input type="radio" name="user" value="{{ user.username }}">
+      {% if user.first_name %}
+        {{ user.first_name }}
+      {% else %}
+        {{ user.username }}
+      {% endif %}
+      </input>
+    {% endfor %}
+    <p><input type="submit" value="Change"></p>
+    </form>
+  </body>
+</html>

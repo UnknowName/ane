@@ -7,6 +7,7 @@ from django.contrib.auth.models import User,Group
 
 from express.forms import FileForm
 from express.models import Express
+from express.paginator import split_page
 from express.utils import read_excel, to_datetime, to_unicode
 
 import time
@@ -57,3 +58,16 @@ def data_import(request):
     else:
         form = FileForm()
     return render(request, 'import.html', locals())
+
+
+def change_follower(request):
+    if request.method == 'POST':
+        numbers = request.POST.getlist('numbers')
+        user = request.POST.getlist('user')[0]
+        print numbers, user
+        return HttpResponse('OK')
+    else:
+        users = User.objects.filter(is_superuser=0)
+        expresses = Express.objects.all()
+        numbers = split_page(request, expresses)
+        return render(request, 'change.html', locals())
