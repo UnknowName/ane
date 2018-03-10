@@ -28,7 +28,7 @@ class Express(models.Model):
     class Meta:
         verbose_name = '运单管理'
         verbose_name_plural = '运单管理'
-        ordering = ['-priority', 'start_time']
+        ordering = ['-priority', '-start_time']
         permissions = (
             ('change_detail', '只允许修改需求,用于客户帐号'),
             ('change_follower', '只允许修改跟进相关，用于跟单帐号'),
