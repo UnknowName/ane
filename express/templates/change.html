@@ -43,5 +43,14 @@
     {% endfor %}
     <p><input type="submit" value="Change"></p>
     </form>
+    <div id="pagintor" float="center">
+                {% for page in numbers.paginator.page_range %}
+                    {% ifequal page numbers.number %}
+                        {{ page }}
+                    {% else %}
+                        <a href="?page={{ page}}">{{ page }}</a>
+                    {% endifequal %}
+                {% endfor %}
+     </div>
   </body>
 </html>
