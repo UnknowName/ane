@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+
 from express.views import data_import
 from express.views import change_follower
+from express.auth_login import auth_login
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^import/$', data_import),
     url(r'^change/$', change_follower),
+    url(r'^accounts/login/$', auth_login),
 ]

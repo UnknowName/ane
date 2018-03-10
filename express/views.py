@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.contrib.auth.models import User,Group
+from django.contrib.auth.decorators import login_required
 
 from express.forms import FileForm
 from express.models import Express
@@ -13,7 +14,7 @@ from express.utils import read_excel, to_datetime, to_unicode
 import time
 from xpinyin import Pinyin
 
-
+@login_required(login_url='/accounts/login/')
 def data_import(request):
     time.clock()
     if request.method == 'POST':
@@ -60,6 +61,7 @@ def data_import(request):
     return render(request, 'import.html', locals())
 
 
+@login_required(login_url='/accounts/login/')
 def change_follower(request):
     if request.method == 'POST':
         numbers = request.POST.getlist('numbers')
