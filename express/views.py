@@ -74,7 +74,8 @@ def change_follower(request):
                 express = query.get(number=number)
                 express.follower = user
                 express.save()
-        return HttpResponse('Change Suceess!')
+            return HttpResponse('Change Suceess!')
+        return HttpResponse('Please select number and user!')
     else:
         users = User.objects.filter(is_superuser=0)
         expresses = Express.objects.all()
