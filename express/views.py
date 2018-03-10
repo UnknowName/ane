@@ -27,7 +27,13 @@ def data_import(request):
             next(gener)
             for datas in gener:
                 unicode_datas = [ to_unicode(data) for data in datas ]
-                num, start_time, orig, follower_firstname, status = unicode_datas
+                datas_length = len(unicode_datas)
+                if datas_length == 2:
+                    num, follower_firstname = unicode_datas
+                elif datas_length == 5:
+                    num, start_time, orig, follower_firstname, status = unicode_datas
+                else:
+                    return HttpResponse('Pleas check the file column!')
                 # Get the User Object,If not have the user,Create user and set
                 # default Password
                 try:
@@ -43,19 +49,28 @@ def data_import(request):
                     perm = Group.objects.get(name=u'跟单权限')
                     follower.groups = [perm]
                     follower.save()
-                try:
-                    number = Express(
-                        number=num,orig=orig, follower=follower, status=status
-                    )
-                    number.save()
-                    number.start_time = to_datetime(start_time)
-                    number.save()
-                except Exception as e:
-                    _, err_info = e
-                    print err_info
-                    return HttpResponse('%s %s' %('Import Failed:', err_info))
-        process_time = str(time.clock()).encode('utf8')
-        return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
+                if datas_length == 2:
+                    try:
+                        express = Express.objects.get(number=num)
+                        express.follower = follower
+                        express.save()
+                    except Express.DoesNotExist:
+                        number = Express.objects.create(
+                            number=num, follower=follower
+                        )
+                    return HttpResponse('Change follower success!')
+                elif datas_length == 5:
+                    try:
+                        number = Express(
+                            number=num,orig=orig, follower=follower, status=status
+                        )
+                        number.save()
+                        number.start_time = to_datetime(start_time)
+                        number.save()
+                    except Exception as e:
+                        return HttpResponse('%s %s' %('Import Failed:', e))
+                    process_time = str(time.clock()).encode('utf8')
+                    return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
     else:
         form = FileForm()
     return render(request, 'import.html', locals())
