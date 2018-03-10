@@ -25,7 +25,11 @@
             <td>{{ num.orig }}</td>
             <td>{{ num.start_time }}</td>
             <td>{{ num.status }}</td>
-            <td>{{ num.follower }}</td>
+            {% if num.follower.first_name %}
+              <td>{{ num.follower.first_name }}</td>
+            {% else %}
+              <td>{{ num.follower.username }}
+            {% endif %}
             <td>{{ num.error_type }}</td>
             <td>{{ num.resaon }}</td>
           </tr>  
