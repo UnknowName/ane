@@ -63,9 +63,18 @@ def data_import(request):
 def change_follower(request):
     if request.method == 'POST':
         numbers = request.POST.getlist('numbers')
-        user = request.POST.getlist('user')[0]
-        print numbers, user
-        return HttpResponse('OK')
+        users = request.POST.getlist('user')
+        if numbers and users:
+            query = Express.objects
+            try:
+                user = User.objects.get(first_name=users[0])
+            except User.DoesNotExist:
+                user = User.objects.get(username=users[0])
+            for number in numbers:
+                express = query.get(number=number)
+                express.follower = user
+                express.save()
+        return HttpResponse('Change Suceess!')
     else:
         users = User.objects.filter(is_superuser=0)
         expresses = Express.objects.all()
