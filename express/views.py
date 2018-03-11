@@ -14,7 +14,7 @@ from express.utils import read_excel, to_datetime, to_unicode
 import time
 from xpinyin import Pinyin
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='/admin/login/')
 def data_import(request):
     time.clock()
     if request.method == 'POST':
@@ -76,7 +76,7 @@ def data_import(request):
     return render(request, 'import.html', locals())
 
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='/admin/login/')
 def change_follower(request):
     if request.method == 'POST':
         numbers = request.POST.getlist('numbers')
