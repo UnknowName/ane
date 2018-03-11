@@ -2,8 +2,13 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.http import StreamingHttpResponse
+
+import os
+import xlwt
+from express.utils import file_iter
 from django.contrib.auth.models import User
-from models import Express, ExpressArchive
+from express.models import Express, ExpressArchive
 
 
 class ExpressAdmin(admin.ModelAdmin):
@@ -11,13 +16,14 @@ class ExpressAdmin(admin.ModelAdmin):
     show_full_result_count = False
     list_display = (
         'number', 'orig', 'start_time', 'status', 'follower',
-        'detail', 'error_type', 'progess', 'resaon', 'end_time'
+        'detail', 'error_type', 'progess', 'resaon'
     )
     list_display_links = (
         'number', 'orig', 'status', 'detail', 'follower',
-        'error_type', 'progess', 'resaon', 'end_time'
+        'error_type', 'progess', 'resaon'
     )
     list_per_page = 50
+    list_filter = ('follower', 'status')
     fieldsets = [
         ('基本信息', {'fields': ['number', 'orig', 'status']}),
         ('业务信息', {'fields': ['follower', 'detail']}),
@@ -25,7 +31,7 @@ class ExpressAdmin(admin.ModelAdmin):
         (None, {'fields': ['end_time']}),
     ]
     exclude = ['priority']
-    actions = ['change_follower', 'export_data']
+    actions = ['export_data']
 
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
@@ -114,15 +120,23 @@ class ExpressAdmin(admin.ModelAdmin):
             read_only_fields = ('number', 'orig', 'follower', 'start_time', 'detail')
         return read_only_fields
 
-    def change_follower(self, request, queryset):
-        print dir(queryset)
-        return HttpResponse('Test info')
-    change_follower.short_description = "批量修改跟单人员"
-
     def export_data(self, request, queryset):
-        print queryset
+        export_file = 'data.xlsx'
         for data in queryset:
-            print dir(data)
+            datas = [ data.number, data.orig, data.status, data.follower.first_name ]
+            row = 0
+            excel = xlwt.Workbook(encoding='utf8')
+            excel_sheet = excel.add_sheet('shet1')
+            for col, value in enumerate(datas):
+                excel_sheet.write(row, col, value)
+            row += 1
+            if os.path.exists(export_file):
+                os.remove(export_file)
+        excel.save(export_file)
+        response = StreamingHttpResponse(file_iter(export_file))
+        response['Content-Type'] = 'application/octest-stream'
+        response['Content-Disposition'] = 'attachment;filename="export.xlsx"' 
+        return response
     export_data.short_description = '导出选中数据'
 
 
