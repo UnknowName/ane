@@ -15,14 +15,16 @@ def auth_login(request):
         if forms.is_valid():
             username = forms.cleaned_data.get('username')
             password = forms.cleaned_data.get('password')
-            print username, password
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_superuser:
                     login(request, user)
                     http_referer = request.META.get('HTTP_REFERER')
                     if http_referer:
-                        _, url = http_referer.split('next=')
+                        try:
+                            _, url = http_referer.split('next=')
+                        except ValueError:
+                            return render(request, 'manager.html') 
                         return redirect(url)
     else:
         form = LoginForm()
