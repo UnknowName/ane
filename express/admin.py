@@ -167,14 +167,29 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
         export_file = 'data.xls'
         excel = xlwt.Workbook(encoding='utf8')
         excel_sheet = excel.add_sheet('shet1')
-        row = 0
+        # Add EXCEL Header
+        excel_sheet.write(0, 0, '运单号')
+        excel_sheet.write(0, 1, '发件网点')
+        excel_sheet.write(0, 2, '开单时间')
+        excel_sheet.write(0, 3, '状态')
+        excel_sheet.write(0, 4, '跟进人')
+        excel_sheet.write(0, 5, '客户诉求')
+        excel_sheet.write(0, 6, '完结时间')
+        excel_sheet.write(0, 7, '完结后留言')
+        # Write Data to EXCEL
+        row = 1
         for data in queryset:
             datas = map(
                 to_unicode,
                 [ 
-                    str(data.number), data.orig, data.start_time, 
-                    data.status, data.follower.first_name,
-                    data.detail, data.end_time, data.message
+                    str(data.number),
+                    data.orig,
+                    data.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    data.status,
+                    data.follower,
+                    data.detail,
+                    data.end_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    data.message
                 ]
             )
             for col, value in enumerate(datas):
