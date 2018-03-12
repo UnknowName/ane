@@ -23,7 +23,7 @@ class ExpressAdmin(admin.ModelAdmin):
         'error_type', 'progess', 'resaon'
     )
     list_per_page = 50
-    list_filter = ('follower', 'status')
+    list_filter = ('follower', 'status', 'orig')
     fieldsets = [
         ('基本信息', {'fields': ['number', 'orig', 'status']}),
         ('业务信息', {'fields': ['follower', 'detail']}),
@@ -156,6 +156,7 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
         'number', 'orig', 'start_time', 'status',
         'follower', 'detail', 'end_time', 'message'
     )
+    list_filter = ('follower', 'status', 'orig')
 
     def get_readonly_fields(self, request, obj):
         reads = [ field for field in self.list_display if field != 'message' ]
