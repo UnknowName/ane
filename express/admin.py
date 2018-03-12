@@ -123,7 +123,7 @@ class ExpressAdmin(admin.ModelAdmin):
     def export_data(self, request, queryset):
         export_file = 'data.xlsx'
         for data in queryset:
-            datas = map(to_unicode, [ data.number, data.orig, data.status, data.follower.first_name ])
+            datas = map(to_unicode, [ str(data.number), data.orig, data.status, data.follower.first_name ])
             print datas
             row = 0
             excel = xlwt.Workbook(encoding='utf8')
