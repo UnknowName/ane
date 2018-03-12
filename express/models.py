@@ -88,6 +88,7 @@ class ExpressArchive(ExpressBase):
         verbose_name_plural = '历史运单'
         ordering = ['-end_time', 'message']
         permissions = (
-            ('view', '查看'),
+            ('change_time', '编辑留言时间，用于跟单帐号'),
+            ('change_msg', '编辑留言，用于客户帐号')
         )
         default_permissions = ('add', 'change', 'delete')
