@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'cheng.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ane',
+        'NAME': 'ane2',
         'HOST': '192.168.11.213',
-        'USER': 'ane',
-        'PASSWORD': 'ane',
+        'USER': 'root',
+        'PASSWORD': '1234qwer',
     }
 }
 
