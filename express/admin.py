@@ -6,8 +6,8 @@ from django.http import StreamingHttpResponse
 
 import os
 import xlwt
-from express.utils import file_iter
 from django.contrib.auth.models import User
+from express.utils import file_iter, to_unicode
 from express.models import Express, ExpressArchive
 
 
@@ -123,7 +123,7 @@ class ExpressAdmin(admin.ModelAdmin):
     def export_data(self, request, queryset):
         export_file = 'data.xlsx'
         for data in queryset:
-            datas = [ data.number, data.orig, data.status, data.follower.first_name ]
+            datas = map(to_unicode, [ data.number, data.orig, data.status, data.follower.first_name ])
             print datas
             row = 0
             excel = xlwt.Workbook(encoding='utf8')
