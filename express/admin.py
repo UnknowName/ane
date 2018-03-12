@@ -122,12 +122,11 @@ class ExpressAdmin(admin.ModelAdmin):
 
     def export_data(self, request, queryset):
         export_file = 'data.xlsx'
+        excel = xlwt.Workbook(encoding='utf8')
+        excel_sheet = excel.add_sheet('shet1')
+        row = 0
         for data in queryset:
             datas = map(to_unicode, [ str(data.number), data.orig, data.status, data.follower.first_name ])
-            print datas
-            row = 0
-            excel = xlwt.Workbook(encoding='utf8')
-            excel_sheet = excel.add_sheet('shet1')
             for col, value in enumerate(datas):
                 excel_sheet.write(row, col, value)
             row += 1
