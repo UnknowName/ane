@@ -157,10 +157,37 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
         'follower', 'detail', 'end_time', 'message'
     )
     list_filter = ('follower', 'status', 'orig')
+    actions = ['export_data']
 
     def get_readonly_fields(self, request, obj):
         reads = [ field for field in self.list_display if field != 'message' ]
         return reads
+
+    def export_data(self, request, queryset):
+        export_file = 'data.xls'
+        excel = xlwt.Workbook(encoding='utf8')
+        excel_sheet = excel.add_sheet('shet1')
+        row = 0
+        for data in queryset:
+            datas = map(
+                to_unicode,
+                [ 
+                    str(data.number), data.orig, data.start_time, 
+                    data.status, data.follower.first_name,
+                    data.detail, data.end_time, data.message
+                ]
+            )
+            for col, value in enumerate(datas):
+                excel_sheet.write(row, col, value)
+            row += 1
+        if os.path.exists(export_file):
+            os.remove(export_file)
+        excel.save(export_file)
+        response = StreamingHttpResponse(file_iter(export_file))
+        response['Content-Type'] = 'application/octest-stream'
+        response['Content-Disposition'] = 'attachment;filename="data.xls"' 
+        return response
+    export_data.short_description = '导出选中数据'
 
 
 admin.site.register(Express, ExpressAdmin)
