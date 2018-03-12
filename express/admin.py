@@ -124,6 +124,7 @@ class ExpressAdmin(admin.ModelAdmin):
         export_file = 'data.xlsx'
         for data in queryset:
             datas = [ data.number, data.orig, data.status, data.follower.first_name ]
+            print datas
             row = 0
             excel = xlwt.Workbook(encoding='utf8')
             excel_sheet = excel.add_sheet('shet1')
@@ -135,7 +136,7 @@ class ExpressAdmin(admin.ModelAdmin):
         excel.save(export_file)
         response = StreamingHttpResponse(file_iter(export_file))
         response['Content-Type'] = 'application/octest-stream'
-        response['Content-Disposition'] = 'attachment;filename="export.xlsx"' 
+        response['Content-Disposition'] = 'attachment;filename="data.xlsx"' 
         return response
     export_data.short_description = '导出选中数据'
 
