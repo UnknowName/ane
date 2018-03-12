@@ -130,7 +130,7 @@ class ExpressAdmin(admin.ModelAdmin):
             excel_sheet = excel.add_sheet('shet1')
             for col, value in enumerate(datas):
                 excel_sheet.write(row, col, value)
-        row += 1
+            row += 1
         if os.path.exists(export_file):
             os.remove(export_file)
         excel.save(export_file)
