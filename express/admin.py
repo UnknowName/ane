@@ -121,7 +121,7 @@ class ExpressAdmin(admin.ModelAdmin):
         return read_only_fields
 
     def export_data(self, request, queryset):
-        export_file = 'data.xlsx'
+        export_file = 'data.xls'
         excel = xlwt.Workbook(encoding='utf8')
         excel_sheet = excel.add_sheet('shet1')
         row = 0
@@ -135,7 +135,7 @@ class ExpressAdmin(admin.ModelAdmin):
         excel.save(export_file)
         response = StreamingHttpResponse(file_iter(export_file))
         response['Content-Type'] = 'application/octest-stream'
-        response['Content-Disposition'] = 'attachment;filename="data.xlsx"' 
+        response['Content-Disposition'] = 'attachment;filename="data.xls"' 
         return response
     export_data.short_description = '导出选中数据'
 
