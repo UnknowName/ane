@@ -143,7 +143,7 @@ class ExpressAdmin(admin.ModelAdmin):
 
 
 class ExpressArchiveAdmin(admin.ModelAdmin):
-    search_fields = ('number',)
+    search_fields = ('=number',)
     show_full_result_count = False
     fieldsets = [
         ('完结基本信息', {'fields':[
