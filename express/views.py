@@ -68,8 +68,10 @@ def data_import(request):
                         number.start_time = to_datetime(start_time)
                         number.save()
                     except Exception as e:
-                        return HttpResponse('%s %s' %('Import Failed:', e))
-                    process_time = str(time.clock()).encode('utf8')
+                        print e
+                        if 'Duplicate entry' in e:
+                            continue
+            process_time = str(time.clock()).encode('utf8')
             return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
     else:
         form = FileForm()
