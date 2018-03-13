@@ -11,11 +11,16 @@ def read_excel(file_contents):
         encoding_override='utf8'
     )
     for excel_sheet in excel.sheets():
-        for i in range(excel_sheet.nrows):
-            yield excel_sheet.row_values(i)
+        for row in xrange(excel_sheet.nrows):
+            for col in xrange(excel_sheet.ncols):
+                data = excel_sheet.cell(row, col)
+                print dir(data)
+                print data.value
+            yield excel_sheet.row_values(row)
 
 
 def to_datetime(str_time):
+    print str_time
     try:
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
     except Exception:
