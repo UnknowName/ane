@@ -88,9 +88,8 @@ class ExpressAdmin(admin.ModelAdmin):
                         number=obj.number,
                         status=obj.status,
                         orig=obj.orig,
-                        detail=obj.detail
+                        detail=obj.detail,
                         start_time=obj.start_time,
-                        status=obj.status,
                         follower=obj.follower,
                         end_time=obj.end_time
                     )
