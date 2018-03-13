@@ -127,7 +127,13 @@ class ExpressAdmin(admin.ModelAdmin):
         excel_sheet = excel.add_sheet('shet1')
         row = 0
         for data in queryset:
-            datas = map(to_unicode, [ str(data.number), data.orig, data.status, data.follower.first_name ])
+            datas = map(
+                to_unicode,
+                [ 
+                    str(data.number), data.orig, data.status,
+                    data.follower.first_name 
+                ]
+            )
             for col, value in enumerate(datas):
                 excel_sheet.write(row, col, value)
             row += 1
