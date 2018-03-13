@@ -16,8 +16,11 @@ def read_excel(file_contents):
 
 
 def to_datetime(str_time):
-    return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
-
+    try:
+        return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
+    except Exception:
+        return datetime.strptime(str_time, '%Y/%m/%d %H:%M')
+        
 
 def to_unicode(string):
     if isinstance(string, unicode):
