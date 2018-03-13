@@ -70,7 +70,7 @@ def data_import(request):
                     except Exception as e:
                         return HttpResponse('%s %s' %('Import Failed:', e))
                     process_time = str(time.clock()).encode('utf8')
-                    return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
+            return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
     else:
         form = FileForm()
     return render(request, 'import.html', locals())
