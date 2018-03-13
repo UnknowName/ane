@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.http import HttpResponse
 from django.http import StreamingHttpResponse
 
 import os
@@ -53,7 +54,7 @@ class ExpressAdmin(admin.ModelAdmin):
                 start_time=post_start_time,
                 status=post_status,
                 follower=post_follower,
-                detail=post_detail,
+                detail = post_detail,
                 error_type=post_error_type,
                 progess=post_progess,
                 resaon=post_resaon,
@@ -85,11 +86,12 @@ class ExpressAdmin(admin.ModelAdmin):
                 try:
                     ExpressArchive.objects.create(
                         number=obj.number,
+                        status=obj.status,
                         orig=obj.orig,
+                        detail=obj.detail
                         start_time=obj.start_time,
                         status=obj.status,
                         follower=obj.follower,
-                        detail=obj.detail,
                         end_time=obj.end_time
                     )
                     obj.delete()
@@ -150,17 +152,43 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
                                    ]
                          }
         ),
-        (None, {'fields':['message']})
+        ('客户留言信息', {'fields':['message', 'msg_time']})
     ]
     list_display = (
         'number', 'orig', 'start_time', 'status',
-        'follower', 'detail', 'end_time', 'message'
+        'follower', 'detail', 'end_time', 'message', 'msg_time'
     )
     list_filter = ('follower', 'status', 'orig')
     actions = ['export_data']
 
+    def save_model(self, request, obj, form, change):
+        user = request.user
+        if change:
+            if user.has_perm('express.change_msg'):
+                obj.message = form.cleaned_data.get('message')
+                obj.save()
+            if user.has_perm('express.change_time'):
+                obj.msg_time = form.cleaned_data.get('msg_time')
+                obj.save()
+        else:
+            return None
+
     def get_readonly_fields(self, request, obj):
-        reads = [ field for field in self.list_display if field != 'message' ]
+        reads = self.list_display
+        if request.user.is_superuser:
+            reads = ['number', 'orig', 'start_time', 'end_time']
+        elif request.user.has_perm('express.change_time'):
+            reads = [
+              'number', 'orig', 'start_time', 'status', 
+              'detail', 'error_type', 'progess', 'resaon',
+              'end_time','follower', 'message'
+            ]
+        elif request.user.has_perm('express.change_msg'):
+            reads = [
+              'number', 'orig', 'start_time', 'status',
+               'detail','error_type', 'progess', 'resaon', 
+               'end_time', 'follower', 'msg_time'
+            ]
         return reads
 
     def export_data(self, request, queryset):
@@ -186,7 +214,7 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
                     data.orig,
                     data.start_time.strftime('%Y-%m-%d %H:%M:%S'),
                     data.status,
-                    data.follower,
+                    data.follower.first_name,
                     data.detail,
                     data.end_time.strftime('%Y-%m-%d %H:%M:%S'),
                     data.message
