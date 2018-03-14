@@ -12,15 +12,26 @@ def read_excel(file_contents):
     )
     for excel_sheet in excel.sheets():
         for row in xrange(excel_sheet.nrows):
+            row_datas = list()
             for col in xrange(excel_sheet.ncols):
                 data = excel_sheet.cell(row, col)
-                print dir(data)
-                print data.value
-            yield excel_sheet.row_values(row)
+                if data.ctype == 3:
+                    cell_data = xlrd.xldate_as_datetime(
+                        data.value,
+                        excel.datemode
+                    )
+                else:
+                    if isinstance(data.value, unicode):
+                       cell_data = data.value.encode('utf8')
+                    else:
+                        cell_data = data.value
+                row_datas.append(cell_data)
+            #print row_datas
+            yield row_datas
 
 
 def to_datetime(str_time):
-    print str_time
+    #print str_time
     try:
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
     except Exception:
