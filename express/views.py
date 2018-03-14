@@ -8,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 
 from express.forms import FileForm
 from express.models import Express
+from express.utils import read_excel
 from express.paginator import split_page
-from express.utils import read_excel, to_datetime, to_unicode
 
 import time
 from xpinyin import Pinyin
+
 
 @login_required(login_url='/admin/login/')
 def data_import(request):
@@ -26,12 +27,11 @@ def data_import(request):
             gener = read_excel(excel_file.read())
             next(gener)
             for datas in gener:
-                unicode_datas = [ to_unicode(data) for data in datas ]
-                datas_length = len(unicode_datas)
+                datas_length = len(datas)
                 if datas_length == 2:
-                    num, follower_firstname = unicode_datas
+                    num, follower_firstname = datas
                 elif datas_length == 5:
-                    num, start_time, orig, follower_firstname, status = unicode_datas
+                    num, start_time, orig, follower_firstname, status = datas
                 else:
                     return HttpResponse('Pleas check the file column!')
                 # Get the User Object,If not have the user,Create user and set
@@ -62,15 +62,15 @@ def data_import(request):
                 elif datas_length == 5:
                     try:
                         number = Express(
-                            number=num,orig=orig, follower=follower, status=status
+                            number=num, orig=orig, follower=follower, status=status
                         )
                         number.save()
-                        number.start_time = to_datetime(start_time)
+                        number.start_time = start_time
                         number.save()
                     except Exception as e:
-                        print e
                         if 'Duplicate entry' in e:
                             continue
+                        print e
             process_time = str(time.clock()).encode('utf8')
             return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
     else:
