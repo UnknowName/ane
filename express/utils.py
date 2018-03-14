@@ -63,3 +63,21 @@ def file_iter(filename, chunk_size=512):
                 yield content
             else:
                 break
+
+def data_iter(queryset):
+    for data in queryset:
+        start_time = str(data.start_time).split('.')[0]
+        if data.end_time:
+            end_time = str(data.end_time).split('.')[0]
+        else:
+            end_time = ''
+        number = str(data.number).split('.')[0]
+        datas = map(
+            encode_utf8,
+            [
+                number, data.orig, start_time, data.status,data.detail, 
+                data.error_type, data.progess,data.follower.first_name,
+                data.resaon, end_time
+            ]
+        )
+        yield datas

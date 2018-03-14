@@ -8,7 +8,7 @@ from django.http import StreamingHttpResponse
 import os
 import csv
 from django.contrib.auth.models import User
-from express.utils import file_iter, encode_utf8
+from express.utils import file_iter, encode_utf8, data_iter
 from express.models import Express, ExpressArchive
 
 
@@ -134,17 +134,10 @@ class ExpressAdmin(admin.ModelAdmin):
     def export_data(self, request, queryset):
         pseudo_buffer = Echo()
         writer = csv.writer(pseudo_buffer)
-        for data in queryset:
-            start_time = str(data.start_time).split('.')[0]
-            datas = map(
-                encode_utf8,
-                [
-                    str(data.number), data.orig, start_time, data.status,
-                    data.detail, data.error_type, data.progess,
-                    data.follower.first_name, data.resaon, data.end_time
-                ]
-            )
-            response = StreamingHttpResponse(writer.writerow(datas))
+        response = StreamingHttpResponse(
+            (writer.writerow(datas) for datas in data_iter(queryset)),
+            content_type="text/csv"
+        )
         response['Content-Type'] = 'application/octest-stream'
         response['Content-Disposition'] = 'attachment;filename="data.csv"' 
         return response
