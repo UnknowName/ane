@@ -6,10 +6,15 @@ from django.http import HttpResponse
 from django.http import StreamingHttpResponse
 
 import os
-import xlwt
+import csv
 from django.contrib.auth.models import User
-from express.utils import file_iter, to_unicode
+from express.utils import file_iter, encode_utf8
 from express.models import Express, ExpressArchive
+
+
+class Echo(object):
+    def write(self, value):
+        return value
 
 
 class ExpressAdmin(admin.ModelAdmin):
@@ -121,31 +126,27 @@ class ExpressAdmin(admin.ModelAdmin):
                 'follower', 'error_type', 'progess', 'resaon'
             )
         if 'express.change_follower' in permes:
-            read_only_fields = ('number', 'orig', 'follower', 'start_time', 'detail')
+            read_only_fields = (
+                'number', 'orig', 'follower', 'start_time', 'detail'
+            )
         return read_only_fields
 
     def export_data(self, request, queryset):
-        export_file = 'data.xls'
-        excel = xlwt.Workbook(encoding='utf8')
-        excel_sheet = excel.add_sheet('shet1')
-        row = 0
+        pseudo_buffer = Echo()
+        writer = csv.writer(pseudo_buffer)
         for data in queryset:
+            start_time = str(data.start_time).split('.')[0]
             datas = map(
-                to_unicode,
-                [ 
-                    str(data.number), data.orig, data.status,
-                    data.follower.first_name 
+                encode_utf8,
+                [
+                    str(data.number), data.orig, start_time, data.status,
+                    data.detail, data.error_type, data.progess,
+                    data.follower.first_name, data.resaon, data.end_time
                 ]
             )
-            for col, value in enumerate(datas):
-                excel_sheet.write(row, col, value)
-            row += 1
-        if os.path.exists(export_file):
-            os.remove(export_file)
-        excel.save(export_file)
-        response = StreamingHttpResponse(file_iter(export_file))
+            response = StreamingHttpResponse(writer.writerow(datas))
         response['Content-Type'] = 'application/octest-stream'
-        response['Content-Disposition'] = 'attachment;filename="data.xls"' 
+        response['Content-Disposition'] = 'attachment;filename="data.csv"' 
         return response
     export_data.short_description = '导出选中数据'
 

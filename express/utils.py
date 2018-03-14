@@ -38,7 +38,7 @@ def to_datetime(str_time):
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M')
         
 
-def to_unicode(string):
+def encode_utf8(string):
     if isinstance(string, unicode):
         return string.encode('utf8')
     else:
