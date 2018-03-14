@@ -100,12 +100,15 @@ class ExpressAdmin(admin.ModelAdmin):
             obj.save()
 
     def get_queryset(self, request):
-        user = request.user
         qs = super(ExpressAdmin, self).get_queryset(request)
-        if user.is_superuser or user.has_perm('express.change_detail'):
+        if request.user.is_superuser:
             return qs
-        user = User.objects.get(username=user)
-        return user.express_set.all()
+        elif request.user.has_perm('express.change_detail'):
+            orig = User.objects.get(username=request.user).first_name
+            return Express.objects.filter(orig=orig)
+        else:
+            user = User.objects.get(username=request.user)
+            return user.express_set.all()
 
     def get_readonly_fields(self, request, obj):
         permes = request.user.get_all_permissions()
