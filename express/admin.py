@@ -7,6 +7,7 @@ from django.http import StreamingHttpResponse
 
 import os
 import csv
+from datetime import datetime
 from django.contrib.auth.models import User
 from express.utils import file_iter, encode_utf8, data_iter
 from express.models import Express, ExpressArchive
@@ -75,6 +76,7 @@ class ExpressAdmin(admin.ModelAdmin):
         if change:
             if form.initial.get('detail') != post_detail:
                 obj.priority = 1
+                obj.detail_time = datetime.now()
             if post_number:
                 obj.number = long(post_number)
             if post_orig:
@@ -89,6 +91,7 @@ class ExpressAdmin(admin.ModelAdmin):
                 obj.error_type = post_error_type
             if post_progess:
                 obj.progess = post_progess
+                obj.progess_time = datetime.now()
             if post_resaon:
                 obj.resaon = post_resaon
             if post_end_time:
