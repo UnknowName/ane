@@ -82,7 +82,7 @@ def data_iter(queryset):
             encode_utf8,
             [
                 number, data.orig, start_time, data.status, data.detail, 
-                datail_time, data.error_type, data.progess, progess_time,
+                detail_time, data.error_type, data.progess, progess_time,
                 data.follower.first_name, data.resaon, end_time
             ]
         )
