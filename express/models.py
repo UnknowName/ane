@@ -22,11 +22,17 @@ class ExpressBase(models.Model):
     detail = models.TextField(
         max_length=1000, blank=True, null=True, verbose_name='客户诉求'
     )
+    detail_time = models.DateTimeField(
+        null=True, blank=True, verbose_name='诉求提交时间'
+    )
     error_type = models.CharField(
         max_length=20, blank=True, null=True, verbose_name='异常类型'
     )
     progess = models.TextField(
         max_length=500, blank=True, null=True, verbose_name='解决进展'
+    )
+    progess_time = models.DateTimeField(
+        null=True, blank=True, verbose_name='解决时间'
     )
     resaon = models.TextField(
         max_length=500, blank=True, null=True, verbose_name='未解决原因'

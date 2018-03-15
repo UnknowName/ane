@@ -21,15 +21,19 @@ class ExpressAdmin(admin.ModelAdmin):
     search_fields = ('=number', '=status', '=follower__username')
     show_full_result_count = False
     list_display = (
-        'number', 'orig', 'start_time', 'status', 'follower',
-        'detail', 'error_type', 'progess', 'resaon'
+        'number', 'orig', 'start_time', 'status',
+        'follower', 'detail', 'detail_time',
+        'error_type', 'progess', 'progess_time', 'resaon'
     )
     list_display_links = (
         'number', 'orig', 'status', 'detail', 'follower',
         'error_type', 'progess', 'resaon'
     )
     list_per_page = 50
-    list_filter = ('follower', 'status', 'orig')
+    list_filter = (
+        'follower', 'status', 'orig', 'start_time',
+        'detail_time', 'progess_time'
+    )
     fieldsets = [
         ('基本信息', {'fields': ['number', 'orig', 'status']}),
         ('业务信息', {'fields': ['follower', 'detail']}),
