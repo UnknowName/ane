@@ -36,9 +36,9 @@ def to_datetime(str_time):
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M')
         
 
-def encode_gb2312(string):
+def encode_utf8(string):
     if isinstance(string, unicode):
-        return string.encode('utf8').encode('GB2312')
+        return string.encode('utf8')
     else:
         return string
 
@@ -71,7 +71,7 @@ def data_iter(queryset):
             end_time = ''
         number = str(data.number).split('.')[0]
         datas = map(
-            encode_gb2312,
+            encode_utf8,
             [
                 number, data.orig, start_time, data.status,data.detail, 
                 data.error_type, data.progess,data.follower.first_name,
