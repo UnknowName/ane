@@ -32,7 +32,7 @@ class ExpressBase(models.Model):
         max_length=500, blank=True, null=True, verbose_name='解决进展'
     )
     progess_time = models.DateTimeField(
-        null=True, blank=True, verbose_name='解决时间'
+        null=True, blank=True, verbose_name='回复时间'
     )
     resaon = models.TextField(
         max_length=500, blank=True, null=True, verbose_name='未解决原因'
