@@ -69,13 +69,21 @@ def data_iter(queryset):
             end_time = str(data.end_time).split('.')[0]
         else:
             end_time = ''
+        if data.detail_time:
+            detail_time = str(data.detail_time).split('.')[0]
+        else:
+            detail_time = ''
+        if data.progess_time:
+            progess_time = str(data.progess_time).split('.')[0]
+        else:
+            progess_time = ''
         number = str(data.number).split('.')[0]
         datas = map(
             encode_utf8,
             [
-                number, data.orig, start_time, data.status,data.detail, 
-                data.error_type, data.progess,data.follower.first_name,
-                data.resaon, end_time
+                number, data.orig, start_time, data.status, data.detail, 
+                datail_time, data.error_type, data.progess, progess_time,
+                data.follower.first_name, data.resaon, end_time
             ]
         )
         yield datas
