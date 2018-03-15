@@ -9,7 +9,7 @@ import os
 import csv
 from datetime import datetime
 from django.contrib.auth.models import User
-from express.utils import file_iter, encode_utf8, data_iter
+from express.utils import file_iter, data_iter
 from express.models import Express, ExpressArchive
 
 

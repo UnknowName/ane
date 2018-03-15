@@ -26,21 +26,19 @@ def read_excel(file_contents):
                     else:
                         cell_data = data.value
                 row_datas.append(cell_data)
-            #print row_datas
             yield row_datas
 
 
 def to_datetime(str_time):
-    #print str_time
     try:
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
     except Exception:
         return datetime.strptime(str_time, '%Y/%m/%d %H:%M')
         
 
-def encode_utf8(string):
+def encode_gb2312(string):
     if isinstance(string, unicode):
-        return string.encode('utf8')
+        return string.encode('GB2312')
     else:
         return string
 
@@ -73,7 +71,7 @@ def data_iter(queryset):
             end_time = ''
         number = str(data.number).split('.')[0]
         datas = map(
-            encode_utf8,
+            encode_gb2312,
             [
                 number, data.orig, start_time, data.status,data.detail, 
                 data.error_type, data.progess,data.follower.first_name,
