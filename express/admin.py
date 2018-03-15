@@ -30,10 +30,9 @@ class ExpressAdmin(admin.ModelAdmin):
         'number', 'orig', 'status', 'detail', 'follower',
         'error_type', 'progess', 'resaon'
     )
-    list_per_page = 50
+    list_per_page = 100
     list_filter = (
-        'follower', 'status', 'orig', 'start_time',
-        'detail_time', 'progess_time'
+        'follower', 'status', 'orig', 'detail_time', 'progess_time'
     )
     fieldsets = [
         ('基本信息', {'fields': ['number', 'orig', 'status']}),
@@ -43,6 +42,7 @@ class ExpressAdmin(admin.ModelAdmin):
     ]
     exclude = ['priority']
     actions = ['export_data']
+    date_hierarchy = 'start_time'
 
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
