@@ -38,7 +38,7 @@ def to_datetime(str_time):
 
 def encode_gb2312(string):
     if isinstance(string, unicode):
-        return string.encode('GB2312')
+        return string.encode('utf8').encode('GB2312')
     else:
         return string
 
