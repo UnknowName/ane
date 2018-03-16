@@ -47,7 +47,7 @@ class ExpressAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
         detail = post_dic.get('detail')
-        end_time = post_dic.get('detail')
+        end_time = post_dic.get('end_time')
         for key,value in post_dic.iteritems():
             setattr(obj, key, value)
         if detail:
