@@ -47,11 +47,18 @@ class ExpressAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
         detail = post_dic.get('detail')
+        end_time = post_dic.get('detail')
         for key,value in post_dic.iteritems():
             setattr(obj, key, value)
         if detail:
             setattr(obj, 'priority', 1)
         obj.save()
+        if change and end_time:
+            archive = ExpressArchive()
+            for key, value in obj.__dict__.iteritems():
+                setattr(archive, key, value)
+            archive.save()
+            obj.delete()
 
     def get_queryset(self, request):
         qs = super(ExpressAdmin, self).get_queryset(request)
