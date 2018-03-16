@@ -43,16 +43,6 @@ def encode_utf8(string):
         return string
 
 
-def write_excel(filename, lst):
-    row = 0
-    excel = xlwt.Workbook(encoding='utf8')
-    excel_sheet = excel.add_sheet('sheet1')
-    for col, data in enumerate(lst):
-        excel_sheet.write(row, col, data)
-    row += 1
-    excel.save(filename)
-
-
 def file_iter(filename, chunk_size=512):
     with open(filename) as f:
         while True:
@@ -62,6 +52,7 @@ def file_iter(filename, chunk_size=512):
             else:
                 break
 
+                
 def data_iter(queryset):
     for data in queryset:
         start_time = str(data.start_time).split('.')[0]
