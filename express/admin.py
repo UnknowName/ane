@@ -53,6 +53,7 @@ class ExpressAdmin(admin.ModelAdmin):
             setattr(obj, key, value)
         if detail:
             setattr(obj, 'priority', 1)
+            setattr(obj, 'detail_time', datetime.now())
         if progess:
             setattr(obj, 'progess_time', datetime.now())
         obj.save()
