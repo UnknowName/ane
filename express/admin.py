@@ -48,10 +48,13 @@ class ExpressAdmin(admin.ModelAdmin):
         post_dic = form.cleaned_data
         detail = post_dic.get('detail')
         end_time = post_dic.get('end_time')
+        progess = post_dic.get('progess')
         for key,value in post_dic.iteritems():
             setattr(obj, key, value)
         if detail:
             setattr(obj, 'priority', 1)
+        if progess:
+            setattr(obj, 'progess_time', datetime.now())
         obj.save()
         if change and end_time:
             archive = ExpressArchive()
