@@ -139,7 +139,7 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
             reads = [
               'number', 'orig', 'start_time', 'status', 
               'detail', 'error_type', 'progess', 'resaon',
-              'end_time','follower', 'message'
+              'end_time','follower'
             ]
         elif request.user.has_perm('express.change_msg'):
             reads = [
