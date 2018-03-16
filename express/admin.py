@@ -46,70 +46,12 @@ class ExpressAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         post_dic = form.cleaned_data
-        post_number = post_dic.get('number')
-        post_orig = post_dic.get('orig')
-        post_start_time = post_dic.get('start_time')
-        post_status = post_dic.get('status')
-        post_follower = post_dic.get('follower')
-        post_detail = post_dic.get('detail')
-        post_error_type = post_dic.get('error_type')
-        post_progess = post_dic.get('progess')
-        post_resaon = post_dic.get('resaon')
-        post_end_time = post_dic.get('end_time')
-        # First Add the express
-        if not change:
-            Express.objects.create(
-                number=long(post_number),
-                orig=post_orig,
-                start_time=post_start_time,
-                status=post_status,
-                follower=post_follower,
-                detail = post_detail,
-                error_type=post_error_type,
-                progess=post_progess,
-                resaon=post_resaon,
-                end_time=post_end_time,
-                priority=0
-            )
-            return None
-        # Edit Something
-        if change:
-            if form.initial.get('detail') != post_detail:
-                obj.priority = 1
-                obj.detail_time = datetime.now()
-            if post_number:
-                obj.number = long(post_number)
-            if post_orig:
-                obj.orig = post_orig
-            if post_start_time:
-                obj.start_time = to_datetime(post_start_time)
-            if post_follower:
-                obj.follower = post_follower
-            if post_detail:
-                obj.detail = post_detail
-            if post_error_type:
-                obj.error_type = post_error_type
-            if post_progess:
-                obj.progess = post_progess
-                obj.progess_time = datetime.now()
-            if post_resaon:
-                obj.resaon = post_resaon
-            if post_end_time:
-                try:
-                    ExpressArchive.objects.create(
-                        number=obj.number,
-                        status=obj.status,
-                        orig=obj.orig,
-                        detail=obj.detail,
-                        start_time=obj.start_time,
-                        follower=obj.follower,
-                        end_time=obj.end_time
-                    )
-                    obj.delete()
-                    return None
-                except Exception as e:
-                    print 'Wrong!', e
-            obj.save()
+        detail = post_dic.get('detail')
+        for key,value in post_dic.iteritems():
+            setattr(obj, key, value)
+        if detail:
+            setattr(obj, 'priority', 1)
+        obj.save()
 
     def get_queryset(self, request):
         qs = super(ExpressAdmin, self).get_queryset(request)
