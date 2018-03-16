@@ -13,9 +13,7 @@ class ExpressBase(models.Model):
         null=True,
         verbose_name='发件网点'
     )
-    start_time = models.DateTimeField(
-        auto_now_add=True, verbose_name='开单时间'
-    )
+    start_time = models.DateTimeField(verbose_name='开单时间')
     status = models.CharField(
         max_length=50, blank=True, null=True, verbose_name='运单状态'
     )

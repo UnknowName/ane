@@ -49,6 +49,8 @@ class ExpressAdmin(admin.ModelAdmin):
         detail = post_dic.get('detail')
         end_time = post_dic.get('end_time')
         progess = post_dic.get('progess')
+        if not change:
+            setattr(obj, 'start_time', datetime.now())
         for key,value in post_dic.iteritems():
             setattr(obj, key, value)
         if detail:
