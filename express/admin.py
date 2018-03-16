@@ -31,9 +31,6 @@ class ExpressAdmin(admin.ModelAdmin):
         'error_type', 'progess', 'resaon'
     )
     list_per_page = 100
-    list_filter = (
-        'follower', 'status', 'orig', 'detail_time', 'progess_time'
-    )
     fieldsets = [
         ('基本信息', {'fields': ['number', 'orig', 'status']}),
         ('业务信息', {'fields': ['follower', 'detail']}),
@@ -65,6 +62,24 @@ class ExpressAdmin(admin.ModelAdmin):
                 setattr(archive, key, value)
             archive.save()
             obj.delete()
+
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            list_filter = (
+                'follower',
+                'status',
+                'orig',
+                'detail_time',
+                'progess_time'
+            )
+        else:
+            list_filter = (
+                'status',
+                'orig',
+                'detail_time',
+                'progess_time'
+            )
+        return list_filter
 
     def get_queryset(self, request):
         qs = super(ExpressAdmin, self).get_queryset(request)
