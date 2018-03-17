@@ -27,13 +27,23 @@ def data_import(request):
                 return HttpResponse(u'请上传EXCEL文件!')
             gener = read_excel(excel_file.read())
             next(gener)
+            total_sucess = 0
             if op_type == 'status':
                 for datas in gener:
                     num, status = datas
+                    try:
+                        express = Express.objects.get(number=num)
+                        express.status = status
+                        express.save()
+                        total_sucess += 1
+                    except Express.DoesNotExist:
+                        pass
+                process_time = str(time.clock()).encode('utf8')
             if op_type == 'import':
                 expresses = list()
                 count = 0
                 for datas in gener:
+                    total_sucess += 1
                     num, start_time, orig, follower_firstname, status = datas
                     try:
                         follower = User.objects.get(first_name=follower_firstname)
@@ -69,11 +79,22 @@ def data_import(request):
                         continue
                 Express.objects.bulk_create(expresses)
                 process_time = str(time.clock()).encode('utf8')
-                return HttpResponse(u'导入数据成功，共花费时间' + process_time + u'秒')
             if op_type == 'follower':
                 for datas in gener:
-                    num, follower_firstname = datas
-                    pass
+                    try:
+                        num, follower_firstname = datas
+                        follower = User.objects.get(first_name=follower_firstname)
+                        express = Express.objects.get(number=num)
+                        express.follower = follower
+                        express.save()
+                        total_sucess += 1
+                    except Express.DoesNotExist:
+                        pass
+                process_time = str(time.clock()).encode('utf8')
+            return HttpResponse(
+                u'%s条数据成功,共花费时间%s秒' % (total_sucess, process_time)
+            )
+
     else:
         form = FileForm()
     return render(request, 'import.html', locals())
