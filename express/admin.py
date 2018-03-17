@@ -37,6 +37,10 @@ class ExpressAdmin(admin.ModelAdmin):
         ('业务详情', {'fields': ['error_type', 'progess', 'resaon']}),
         (None, {'fields': ['end_time']}),
     ]
+    radio_fields = {
+        "error_type": admin.HORIZONTAL,
+        "resaon": admin.HORIZONTAL
+    }
     exclude = ['priority']
     actions = ['export_data']
     date_hierarchy = 'start_time'

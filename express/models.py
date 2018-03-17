@@ -6,6 +6,30 @@ from django.contrib.auth.models import User
 
 
 class ExpressBase(models.Model):
+    ERROR_TYPES = (
+        ('miss', '损失'),
+        ('break', '破损'),
+        ('back', '已退回'),
+        ('nosend', '未发出'),
+        ('received', '已收到'),
+        ('rollback', '拦截退回'),
+        ('notreceived', '签收未收'),
+    )
+    RESAONS = (
+        ('error_received', '错录签收/无法签收'),
+        ('wrong_count', '多件/少件'),
+        ('cost', '费用类'),
+        ('wrong_allot', '货物错分'),
+        ('error_goods', '货物异常'),
+        ('goods_exchange', '货物转同行'),
+        ('deny', '拒收退件'),
+        ('error_sites', '网点异常'),
+        ('miss', '遗失/破损'),
+        ('notify', '已催未派'),
+        ('received_later', '以收未签'),
+        ('self', '自提件'),
+        ('other', '其他'),
+    )
     number = models.BigIntegerField(unique=True, verbose_name='运单号')
     orig = models.CharField(
         max_length=200,
@@ -24,7 +48,10 @@ class ExpressBase(models.Model):
         null=True, blank=True, verbose_name='诉求提交时间'
     )
     error_type = models.CharField(
-        max_length=20, blank=True, null=True, verbose_name='异常类型'
+        max_length=20,
+        blank=True, null=True,
+        choices=ERROR_TYPES,
+        verbose_name='异常类型'
     )
     progess = models.TextField(
         max_length=500, blank=True, null=True, verbose_name='解决进展'
@@ -32,8 +59,11 @@ class ExpressBase(models.Model):
     progess_time = models.DateTimeField(
         null=True, blank=True, verbose_name='回复时间'
     )
-    resaon = models.TextField(
-        max_length=500, blank=True, null=True, verbose_name='未解决原因'
+    resaon = models.CharField(
+        max_length=500,
+        blank=True, null=True,
+        choices=RESAONS,
+        verbose_name='未解决原因'
     )
     end_time = models.DateTimeField(
         blank=True, null=True,  verbose_name='完结时间'
