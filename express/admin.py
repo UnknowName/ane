@@ -73,8 +73,8 @@ class ExpressAdmin(admin.ModelAdmin):
                 'follower',
                 'status',
                 'orig',
-                'detail_time',
-                'progess_time'
+                'error_type',
+                'resaon'
             )
         else:
             list_filter = (
