@@ -7,13 +7,17 @@ from django.contrib.auth.models import User
 
 class ExpressBase(models.Model):
     ERROR_TYPES = (
-        ('miss', '损失'),
+        ('miss', '遗失'),
         ('break', '破损'),
         ('back', '已退回'),
         ('nosend', '未发出'),
         ('received', '已收到'),
         ('rollback', '拦截退回'),
         ('notreceived', '签收未收'),
+        ('false_recevied', '虚假签收'),
+        ('not_recevied', '未签收'),
+        ('recevied', '已签收'),
+        ('loading', '中转中'),
     )
     RESAONS = (
         ('error_received', '错录签收/无法签收'),
@@ -23,7 +27,12 @@ class ExpressBase(models.Model):
         ('error_goods', '货物异常'),
         ('goods_exchange', '货物转同行'),
         ('deny', '拒收退件'),
+        ('client', '客户原因'),
+        ('break', '拦截件'),
+        ('no_sender', '盲区件'),
+        ('error_sender', '派送异常'),
         ('error_sites', '网点异常'),
+        ('time_over', '特殊派送时效'),
         ('miss', '遗失/破损'),
         ('notify', '已催未派'),
         ('received_later', '以收未签'),
