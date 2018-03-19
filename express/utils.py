@@ -38,7 +38,7 @@ def to_datetime(str_time):
 
 def encode_utf8(string):
     if isinstance(string, unicode):
-        return string.encode('utf8')
+        return string.encode('utf8', 'ignore')
     else:
         return string
 
