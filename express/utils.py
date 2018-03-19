@@ -2,7 +2,6 @@
 # coding:utf8
 
 import xlrd
-from datetime import datetime
 
 
 def read_excel(file_contents):
@@ -28,13 +27,6 @@ def read_excel(file_contents):
                 row_datas.append(cell_data)
             yield row_datas
 
-
-def to_datetime(str_time):
-    try:
-        return datetime.strptime(str_time, '%Y/%m/%d %H:%M:%S')
-    except Exception:
-        return datetime.strptime(str_time, '%Y/%m/%d %H:%M')
-        
 
 def encode_utf8(string):
     if isinstance(string, unicode):
