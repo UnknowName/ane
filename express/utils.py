@@ -28,9 +28,9 @@ def read_excel(file_contents):
             yield row_datas
 
 
-def encode_utf8(string):
+def encode_gb2312(string):
     if isinstance(string, unicode):
-        return string.encode('utf8', 'ignore')
+        return string.encode('gb2312', 'ignore')
     else:
         return string
 
@@ -62,7 +62,7 @@ def data_iter(queryset):
             progess_time = ''
         number = str(data.number).split('.')[0]
         datas = map(
-            encode_utf8,
+            encode_gb2312,
             [
                 number, data.orig, start_time, data.status, data.detail, 
                 detail_time, data.error_type, data.progess, progess_time,
