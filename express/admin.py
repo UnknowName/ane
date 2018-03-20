@@ -50,7 +50,7 @@ class ExpressAdmin(admin.ModelAdmin):
         detail = post_dic.get('detail')
         end_time = post_dic.get('end_time')
         progess = post_dic.get('progess')
-        for key,value in post_dic.iteritems():
+        for key, value in post_dic.iteritems():
             setattr(obj, key, value)
         if detail:
             setattr(obj, 'priority', 1)
@@ -120,7 +120,7 @@ class ExpressAdmin(admin.ModelAdmin):
             content_type="text/csv"
         )
         response['Content-Type'] = 'application/octest-stream'
-        response['Content-Disposition'] = 'attachment;filename="data.csv"' 
+        response['Content-Disposition'] = 'attachment;filename="data.csv"'
         return response
     export_data.short_description = '导出选中数据'
 
@@ -129,13 +129,13 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
     search_fields = ('=number',)
     show_full_result_count = False
     fieldsets = [
-        ('完结基本信息', {'fields':[
-                                    'number', 'orig', 'start_time', 'status',
+        ('完结基本信息', {'fields': [
+                                     'number', 'orig', 'start_time', 'status',
                                      'follower', 'detail', 'end_time'
-                                   ]
+                                    ]
                          }
         ),
-        ('客户留言信息', {'fields':['message', 'msg_time']})
+        ('客户留言信息', {'fields': ['message', 'msg_time']})
     ]
     list_display = (
         'number', 'orig', 'start_time', 'status',
@@ -162,15 +162,15 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
             reads = ['number', 'orig', 'start_time', 'end_time']
         elif request.user.has_perm('express.change_time'):
             reads = [
-              'number', 'orig', 'start_time', 'status', 
+              'number', 'orig', 'start_time', 'status',
               'detail', 'error_type', 'progess', 'resaon',
-              'end_time','follower'
+              'end_time', 'follower'
             ]
         elif request.user.has_perm('express.change_msg'):
             reads = [
               'number', 'orig', 'start_time', 'status',
-               'detail','error_type', 'progess', 'resaon', 
-               'end_time', 'follower', 'msg_time'
+              'detail', 'error_type', 'progess', 'resaon',
+              'end_time', 'follower', 'msg_time'
             ]
         return reads
 
@@ -182,7 +182,7 @@ class ExpressArchiveAdmin(admin.ModelAdmin):
             content_type="text/csv"
         )
         response['Content-Type'] = 'application/octest-stream'
-        response['Content-Disposition'] = 'attachment;filename="data.csv"' 
+        response['Content-Disposition'] = 'attachment;filename="data.csv"'
         return response
     export_data.short_description = '导出选中数据'
 

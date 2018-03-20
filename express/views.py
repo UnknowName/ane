@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
-from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 
 from express.forms import FileForm
@@ -46,7 +46,9 @@ def data_import(request):
                     total_sucess += 1
                     num, start_time, orig, follower_firstname, status = datas
                     try:
-                        follower = User.objects.get(first_name=follower_firstname)
+                        follower = User.objects.get(
+                            first_name=follower_firstname
+                        )
                     except User.DoesNotExist:
                         pinyin = Pinyin()
                         username = pinyin.get_pinyin(

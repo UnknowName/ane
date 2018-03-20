@@ -21,7 +21,7 @@ def read_excel(file_contents):
                     )
                 else:
                     if isinstance(data.value, unicode):
-                       cell_data = data.value.encode('utf8')
+                        cell_data = data.value.encode('utf8')
                     else:
                         cell_data = data.value
                 row_datas.append(cell_data)
@@ -34,7 +34,7 @@ def encode_gb2312(string):
     else:
         return string
 
-                
+
 def data_iter(queryset):
     for data in queryset:
         start_time = str(data.start_time).split('.')[0]
@@ -54,7 +54,7 @@ def data_iter(queryset):
         datas = map(
             encode_gb2312,
             [
-                number, data.orig, start_time, data.status, data.detail, 
+                number, data.orig, start_time, data.status, data.detail,
                 detail_time, data.error_type, data.progess, progess_time,
                 data.follower.first_name, data.resaon, end_time
             ]
