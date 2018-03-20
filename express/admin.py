@@ -8,8 +8,8 @@ from django.http import StreamingHttpResponse
 import os
 import csv
 from datetime import datetime
+from express.utils import data_iter
 from django.contrib.auth.models import User
-from express.utils import file_iter, data_iter
 from express.models import Express, ExpressArchive
 
 
