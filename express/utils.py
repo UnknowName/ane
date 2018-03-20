@@ -34,16 +34,6 @@ def encode_gb2312(string):
     else:
         return string
 
-
-def file_iter(filename, chunk_size=512):
-    with open(filename) as f:
-        while True:
-            content = f.read(chunk_size)
-            if content:
-                yield content
-            else:
-                break
-
                 
 def data_iter(queryset):
     for data in queryset:
