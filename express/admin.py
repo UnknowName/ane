@@ -63,6 +63,7 @@ class ExpressAdmin(admin.ModelAdmin):
             archive = ExpressArchive()
             for key, value in obj.__dict__.iteritems():
                 setattr(archive, key, value)
+            setattr(archive, 'status', '已完结')
             archive.save()
             obj.delete()
 
