@@ -32,7 +32,7 @@ def data_import(request):
                 for datas in gener:
                     num, status = datas
                     try:
-                        express = Express.objects.get(number=num)
+                        express = Express.objects.get(number__exact=num)
                         express.status = status
                         express.save()
                         total_sucess += 1
@@ -47,7 +47,7 @@ def data_import(request):
                     num, start_time, orig, follower_firstname, status = datas
                     try:
                         follower = User.objects.get(
-                            first_name=follower_firstname
+                            first_name__exact=follower_firstname
                         )
                     except User.DoesNotExist:
                         pinyin = Pinyin()
@@ -85,8 +85,10 @@ def data_import(request):
                 for datas in gener:
                     try:
                         num, follower_firstname = datas
-                        follower = User.objects.get(first_name=follower_firstname)
-                        express = Express.objects.get(number=num)
+                        follower = User.objects.get(
+                            first_name__exact=follower_firstname
+                        )
+                        express = Express.objects.get(number__exact=num)
                         express.follower = follower
                         express.save()
                         total_sucess += 1
