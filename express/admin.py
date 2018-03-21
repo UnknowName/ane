@@ -58,19 +58,15 @@ class ExpressAdmin(admin.ModelAdmin):
             setattr(obj, 'progess_time', datetime.now())
         if not change:
             setattr(obj, 'start_time', datetime.now())
+        if end_time:
+            setattr(obj, 'status', '已完结')
         obj.save()
-        if change and end_time:
-            archive = ExpressArchive()
-            for key, value in obj.__dict__.iteritems():
-                setattr(archive, key, value)
-            setattr(archive, 'status', '已完结')
-            archive.save()
-            obj.delete()
 
     def get_list_filter(self, request):
         if request.user.is_superuser:
             list_filter = (
                 'follower',
+                'status',
                 'orig',
                 'error_type',
                 'resaon'
@@ -78,6 +74,7 @@ class ExpressAdmin(admin.ModelAdmin):
         else:
             list_filter = (
                 'orig',
+                'status',
                 'detail_time',
                 'error_type',
                 'resaon'
