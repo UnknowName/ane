@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.http import StreamingHttpResponse
 
-import os
 import csv
 from datetime import datetime
 from express.utils import data_iter
@@ -71,17 +70,16 @@ class ExpressAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             list_filter = (
                 'follower',
-                'status',
                 'orig',
                 'error_type',
                 'resaon'
             )
         else:
             list_filter = (
-                'status',
                 'orig',
                 'detail_time',
-                'progess_time'
+                'error_type',
+                'resaon'
             )
         return list_filter
 
