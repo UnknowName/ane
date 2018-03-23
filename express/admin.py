@@ -44,16 +44,17 @@ class ExpressAdmin(admin.ModelAdmin):
     date_hierarchy = 'start_time'
 
     def save_model(self, request, obj, form, change):
+        user = request.user
         post_dic = form.cleaned_data
         detail = post_dic.get('detail')
         end_time = post_dic.get('end_time')
         progess = post_dic.get('progess')
         for key, value in post_dic.iteritems():
             setattr(obj, key, value)
-        if detail:
+        if detail and not user.is_superuser:
             setattr(obj, 'priority', 1)
             setattr(obj, 'detail_time', datetime.now())
-        if progess:
+        if progess and not user.is_superuser:
             setattr(obj, 'progess_time', datetime.now())
         if not change:
             setattr(obj, 'start_time', datetime.now())
