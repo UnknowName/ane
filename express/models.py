@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.html import format_html
 from django.contrib.auth.models import User
 
 
@@ -78,6 +79,25 @@ class ExpressBase(models.Model):
         blank=True, null=True,  verbose_name='完结时间'
     )
     priority = models.IntegerField(default=0, editable=False)
+
+    def color_number(self):
+        detail_time = self.detail_time
+        progess_time = self.progess_time
+        if detail_time:
+            if not progess_time:
+                color = 'red'
+            elif progess_time and detail_time > progess_time:
+                color = 'red'
+            else:
+                color = '#447e9b'
+        else:
+            color = '#447e9b'
+        return format_html(
+            '<span style="color:{}">{}</span>',
+            color,
+            self.number,
+        )
+    color_number.short_description = '运单号'
 
     class Meta:
         abstract = True
