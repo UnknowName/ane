@@ -24,6 +24,7 @@ from express.auth_login import auth_login
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^import/$', data_import),
-    url(r'^change/$', change_follower),
+    url(r'^change/$', change_follower, name='all'),
+    url(r'^change/(?P<username>\w{3,20})$', change_follower, name="change"),
     url(r'^accounts/login/$', auth_login),
 ]

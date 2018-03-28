@@ -36,7 +36,7 @@
             <td>{{ num.start_time }}</td>
             <td>{{ num.status }}</td>
             <td>{{ num.follower.first_name }}</td>
-            {% ifequal num.error_type  None %}
+            {% ifequal num.error_type None %}
                 <td>无</td>
             {% else %}
                 <td>{{ num.error_type }}</td>
@@ -49,11 +49,11 @@
     <p>Change To User:</p>
     {% for user in users %}
       <input type="radio" name="user" value="{{ user.username }}">
-      {% if user.first_name %}
-        {{ user.first_name }}
+      {% ifequal user.username '-' %}
+        <a href="{% url 'all' %}">{{ user.first_name }}</a>
       {% else %}
-        {{ user.username }}
-      {% endif %}
+        <a href="{% url 'change' user.username  %}">{{ user.first_name }}</a>
+      {% endifequal %}
       </input>
     {% endfor %}
     <p><input type="submit" value="Change"></p>
@@ -61,12 +61,13 @@
     <div id="pagintor" margin="50px 50px">
                 {% for page in numbers.paginator.page_range %}
                     {% ifequal page numbers.number %}
-                        <!--Page: {{ page }}-->
-                        第一页/共1页
+                        {{ page }}
                     {% else %}
                         Page: <a href="?page={{ page}}">{{ page }}</a>
                     {% endifequal %}
                 {% endfor %}
      </div>
   </body>
+  <script>
+  </script>
 </html>

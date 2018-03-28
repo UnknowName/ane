@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.db.models import Q
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.contrib.auth.models import User, Group
@@ -105,7 +106,7 @@ def data_import(request):
 
 
 @login_required(login_url='/admin/login/')
-def change_follower(request):
+def change_follower(request, username='all'):
     if request.method == 'POST':
         numbers = request.POST.getlist('numbers')
         users = request.POST.getlist('user')
@@ -122,9 +123,14 @@ def change_follower(request):
             return HttpResponse('Change Suceess!')
         return HttpResponse('Please select number and user!')
     else:
-        users = Group.objects.get(name='跟单权限').user_set.values('first_name')
-        expresses = Express.objects.filter(detail__isnull=False).filter(
-            status='已开单'
+        users = Group.objects.get(name='跟单权限').user_set.values(
+            'first_name', 'username'
         )
+        query = Q(status='已开单') & Q(detail__isnull=False) 
+        if username == 'all':
+            expresses = Express.objects.filter(query)
+        else:
+           user = User.objects.get(username=username)
+           expresses = user.express_set.filter(query)
         numbers = split_page(request, expresses)
         return render(request, 'change.html', locals())
