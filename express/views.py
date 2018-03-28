@@ -122,7 +122,9 @@ def change_follower(request):
             return HttpResponse('Change Suceess!')
         return HttpResponse('Please select number and user!')
     else:
-        users = User.objects.filter(is_superuser=0)
-        expresses = Express.objects.all()
+        users = Group.objects.get(name='跟单权限').user_set.values('first_name')
+        expresses = Express.objects.filter(detail__isnull=False).filter(
+            status='已开单'
+        )
         numbers = split_page(request, expresses)
         return render(request, 'change.html', locals())

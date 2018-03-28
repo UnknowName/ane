@@ -1,37 +1,48 @@
 <html>
   <head>
     <title>Change Follower</title>
+    <style>
+    pre {
+        white-space:pre-wrap; /* css3.0 */
+        white-space:-moz-pre-wrap; /* Firefox */
+        white-space:-pre-wrap; /* Opera 4-6 */
+        white-space:-o-pre-wrap; /* Opera 7 */
+        word-wrap:break-word; /* Internet Explorer 5.5+ */
+    }
+    </style>
   </head>
   <body>
     <form action='/change/' method='POST'>
     {% csrf_token %}
     <table border="0">
         <tr>
-          <th>Number</th>
-          <th>orig</th>
-          <th>start_time</th>
-          <th>status</th>
-          <th>follower</th>
-          <th>error_type</th>
-          <th>resaon</th>
+          <th>运单号</th>
+          <th>发件网点</th>
+          <th>开单时间</th>
+          <th>状态</th>
+          <th>跟进人</th>
+          <th>异常类型</th>
+          <th>客户诉求</th>
+          <th>诉求时间</th>
         </tr>
         {% for num in numbers %}
           <tr>
             <td>
               <input type='checkbox' name='numbers' value="{{ num }}">
-                  {{ num }}
+                  {{ num.number }}
               </input>
             </td>
             <td>{{ num.orig }}</td>
             <td>{{ num.start_time }}</td>
             <td>{{ num.status }}</td>
-            {% if num.follower.first_name %}
-              <td>{{ num.follower.first_name }}</td>
+            <td>{{ num.follower.first_name }}</td>
+            {% ifequal num.error_type  None %}
+                <td>无</td>
             {% else %}
-              <td>{{ num.follower.username }}
-            {% endif %}
-            <td>{{ num.error_type }}</td>
-            <td>{{ num.resaon }}</td>
+                <td>{{ num.error_type }}</td>
+            {% endifequal %}
+            <td><pre>{{ num.detail }}</pre></td>
+            <td>{{ num.detail_time }}</td>
           </tr>  
         {% endfor %}
     </table>
@@ -47,12 +58,13 @@
     {% endfor %}
     <p><input type="submit" value="Change"></p>
     </form>
-    <div id="pagintor" float="center">
+    <div id="pagintor" margin="50px 50px">
                 {% for page in numbers.paginator.page_range %}
                     {% ifequal page numbers.number %}
-                        {{ page }}
+                        <!--Page: {{ page }}-->
+                        第一页/共1页
                     {% else %}
-                        <a href="?page={{ page}}">{{ page }}</a>
+                        Page: <a href="?page={{ page}}">{{ page }}</a>
                     {% endifequal %}
                 {% endfor %}
      </div>
