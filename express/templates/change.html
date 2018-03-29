@@ -2,13 +2,6 @@
   <head>
     <title>Change Follower</title>
     <style>
-    pre {
-        white-space:pre-wrap; /* css3.0 */
-        white-space:-moz-pre-wrap; /* Firefox */
-        white-space:-pre-wrap; /* Opera 4-6 */
-        white-space:-o-pre-wrap; /* Opera 7 */
-        word-wrap:break-word; /* Internet Explorer 5.5+ */
-    }
     </style>
   </head>
   <body>
@@ -45,7 +38,7 @@
             {% else %}
                 <td>{{ num.error_type }}</td>
             {% endifequal %}
-            <td><pre>{{ num.detail }}</pre></td>
+            <td>{{ num.detail|escape|truncatechars_html:"80" }}</td>
             <td>{{ num.detail_time }}</td>
           </tr>  
         {% endfor %}
