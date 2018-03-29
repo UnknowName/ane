@@ -60,7 +60,7 @@
                     {% ifequal page numbers.number %}
                         {{ page }}
                     {% else %}
-                        Page: <a href="?page={{ page}}">{{ page }}</a>
+                        <a href="?page={{ page}}">{{ page }}</a>
                     {% endifequal %}
                 {% endfor %}
      </div>

@@ -128,9 +128,9 @@ def change_follower(request, username='all'):
         )
         query = Q(status='已开单') & Q(detail__isnull=False) 
         if username == 'all':
-            expresses = Express.objects.filter(query)
+            expresses = Express.objects.filter(query).order_by('-detail_time')
         else:
            user = User.objects.get(username=username)
-           expresses = user.express_set.filter(query)
+           expresses = user.express_set.filter(query).order_by('-detail_time')
         numbers = split_page(request, expresses)
         return render(request, 'change.html', locals())
