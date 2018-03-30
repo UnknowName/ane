@@ -32,14 +32,10 @@
             <td>{{ num.start_time }}</td>
             <td>{{ num.status }}</td>
             -->
-            <td>{{ num.follower.first_name }}</td>
-            {% ifequal num.error_type None %}
-                <td>无</td>
-            {% else %}
-                <td>{{ num.error_type }}</td>
-            {% endifequal %}
-            <td>{{ num.detail|escape|truncatechars_html:"80" }}</td>
-            <td>{{ num.detail_time }}</td>
+            <td>{{ num.follower.first_name|default_if_none:'-' }}</td>
+            <td>{{ num.error_type|default_if_none:"暂无" }}</td>
+            <td>{{ num.detail|escape|truncatechars_html:"65" }}</td>
+            <td>{{ num.detail_time|default_if_none:'暂未记录' }}</td>
           </tr>  
         {% endfor %}
     </table>
