@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: . 
+      dockerfile: Dockerfile.django
+    volumes:
+      -  /static/:/static/
+  nginx:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "8000:80"
+    links:
+      - web
+    volumes:
+      - /static/:/static/
+    depends_on:
+      - web

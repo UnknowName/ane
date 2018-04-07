@@ -1,0 +1,11 @@
+# AUTHOR unknowname
+# VERSION v1.0
+# DATE 2018-04-07
+
+FROM python:2.7
+ADD ./  /usr/src/app/
+WORKDIR /usr/src/app
+RUN rm -rf Dockerfile.* \
+    && pip install django==1.11 xpinyin xlrd mysqlclient==1.3.7
+VOLUME ["/static"]
+CMD python manage.py runserver 0.0.0.0:9800
