@@ -126,7 +126,7 @@ def change_follower(request, username='all'):
         users = Group.objects.get(name='跟单权限').user_set.values(
             'first_name', 'username'
         )
-        query = Q(status='已开单') & Q(detail__isnull=False) 
+        query = Q(detail__isnull=False) 
         if username == 'all':
             expresses = Express.objects.filter(query).order_by('-detail_time')
         else:
