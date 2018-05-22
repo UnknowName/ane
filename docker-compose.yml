@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.django
     volumes:
       -  /static/:/static/
+    restart: always
   nginx:
     build:
       context: ./
@@ -17,5 +18,6 @@ services:
       - web
     volumes:
       - /static/:/static/
+    restart: always
     depends_on:
       - web
